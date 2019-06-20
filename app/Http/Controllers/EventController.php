@@ -13,16 +13,16 @@ class EventController extends Controller
 
     public function getAll(Request $request)
     {
-        return ['success' => true, 'event'=>Event::all()];
+        return ['success' => true, 'event' => Event::all()];
     }
 
     public function get(Request $request)
     {
         try {
-            return ['success' => true, 'event'=>Event::findOrFail($request->id)];
+            return ['success' => true, 'event' => Event::findOrFail($request->id)];
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {
-                return response(['success'=>false,'message' => 'Invalid ID'], 404);
+                return response(['success' => false, 'message' => 'Invalid ID'], 404);
             }
         }
     }
@@ -35,7 +35,7 @@ class EventController extends Controller
         $event->fill($input);
         $event->save();
 
-        return ['success' => true, 'event'=>$event];
+        return ['success' => true, 'event' => $event];
     }
 
     public function update(Request $request)
@@ -47,11 +47,11 @@ class EventController extends Controller
             $event->save();
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {
-                return response(['success'=>false,'message' => 'Invalid ID'], 404);
+                return response(['success' => false, 'message' => 'Invalid ID'], 404);
             }
         }
 
-        return ['success' => true, 'event'=>$event,'message' => 'Event updated successfully'];
+        return ['success' => true, 'event' => $event, 'message' => 'Event updated successfully'];
     }
 
     public function delete(Request $request)
@@ -60,10 +60,10 @@ class EventController extends Controller
             User::findOrFail(static::getUserId())->events()->findOrFail($request->id)->delete();
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {
-                return response(['success'=>false,'message' => 'Invalid ID'], 404);
+                return response(['success' => false, 'message' => 'Invalid ID'], 404);
             }
         }
 
-        return ['success' => true, "message" => "Deleted event #{$request->id}"
+        return ['success' => true, "message" => "Deleted event #{$request->id}"];
     }
 }

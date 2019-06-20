@@ -10,16 +10,16 @@ class NoticeController extends Controller
 {
     public function getAll(Request $request)
     {
-        return ['success' => true, 'notice'=>Notice::all()];
+        return ['success' => true, 'notice' => Notice::all()];
     }
 
     public function get(Request $request)
     {
         try {
-            return ['success' => true, 'notice'=>Notice::findOrFail($request->id)];
+            return ['success' => true, 'notice' => Notice::findOrFail($request->id)];
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {
-                return response(['success'=>false,'message' => 'Invalid ID'], 404);
+                return response(['success' => false, 'message' => 'Invalid ID'], 404);
             }
         }
     }
@@ -30,7 +30,7 @@ class NoticeController extends Controller
         $notice->fill($request->all());
         $notice->save();
 
-        return ['success' => true, 'notice'=>$notice->toArray()];
+        return ['success' => true, 'notice' => $notice->toArray()];
     }
 
     public function update(Request $request)
@@ -42,11 +42,11 @@ class NoticeController extends Controller
             $notice->save();
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {
-                return response(['success'=>false,'message' => 'Invalid ID'], 404);
+                return response(['success' => false, 'message' => 'Invalid ID'], 404);
             }
         }
 
-        return ['success' => true, 'notice'=> $notice,'message' => 'Notice updated successfully'];
+        return ['success' => true, 'notice' => $notice, 'message' => 'Notice updated successfully'];
     }
 
     public function delete(Request $request)
@@ -55,10 +55,10 @@ class NoticeController extends Controller
             Notice::findOrFail($request->id)->delete();
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {
-                return response(['success'=>false,'message' => 'Invalid ID'], 404);
+                return response(['success' => false, 'message' => 'Invalid ID'], 404);
             }
         }
 
-        return ['success' => true, "message" => "Deleted notice #{$request->id}",
+        return ['success' => true, "message" => "Deleted notice #{$request->id}"];
     }
 }

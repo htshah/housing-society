@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class UserTableSeeder extends Seeder
 {
@@ -14,7 +15,7 @@ class UserTableSeeder extends Seeder
         DB::table('user')->insert([
             'name' => "Het Shah",
             'email' => "htshah60@gmail.com",
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => Hash::make('helloworld'), // password
             'phone' => "9022349874",
             'role' => 'admin',
             'is_active' => true,
@@ -22,7 +23,7 @@ class UserTableSeeder extends Seeder
         DB::table('user')->insert([
             'name' => "John Abraham",
             'email' => "john@gmail.com",
-            'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'password' => Hash::make('helloworld'), // password
             'phone' => "987654123",
             'role' => 'user',
             'is_active' => true,

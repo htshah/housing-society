@@ -18,7 +18,7 @@ class CreateBillingTable extends Migration
             $table->string('title');
             $table->float('amount', 8, 2);
             $table->date('due_date');
-            $table->boolean('is_payed');
+            $table->boolean('is_payed')->default(false);
             $table->unsignedBigInteger('flat_id');
             $table->timestamps();
 

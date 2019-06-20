@@ -19,7 +19,6 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
-        \App\Http\Middleware\JwtMiddleware::class,
     ];
 
     /**
@@ -63,6 +62,7 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'jwt-auth' => \App\Http\Middleware\JwtMiddleware::class,
         'api-header' => \App\Http\Middleware\APIMiddleware::class,
+        'admin' => \App\Http\Middleware\AdminCheckMiddleware::class,
     ];
 
     /**

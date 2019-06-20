@@ -45,7 +45,7 @@ class AuthController extends Controller
             $response = ['success' => false, 'data' => 'Invalid Credentials'];
         }
 
-        return response()->json($response, 201)->cookie('token', $token, config('jwt.ttl'), "/", null, false, true);
+        return response()->json($response, 201)->cookie('token', $token, config('jwt.ttl'), "/", null, false, false);
     }
 
     public function register(Request $request)

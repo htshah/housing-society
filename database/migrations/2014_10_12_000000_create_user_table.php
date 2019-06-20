@@ -19,8 +19,8 @@ class CreateUserTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone')->unique();
-            $table->string('role');
-            $table->boolean('is_active');
+            $table->string('role')->default('user');
+            $table->boolean('is_active')->default(false);
             $table->timestamps();
         });
     }

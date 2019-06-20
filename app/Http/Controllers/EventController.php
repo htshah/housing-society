@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
@@ -41,7 +42,7 @@ class EventController extends Controller
     {
         $event = null;
         try {
-            $event = Event::findOrFail($request->id);
+            $event = User::findOrFail(static::getUserId())->events()->findOrFail($request->id);
             $event->update($request->all());
             $event->save();
         } catch (\Exception $e) {
@@ -56,7 +57,7 @@ class EventController extends Controller
     public function delete(Request $request)
     {
         try {
-            Event::findOrFail($request->id)->delete();
+            User::findOrFail(static::getUserId())->events()->findOrFail($request->id)->delete();
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {
                 return response(['success'=>false,'message' => 'Invalid ID'], 404);

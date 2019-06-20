@@ -46,4 +46,9 @@ class User extends Authenticatable
     {
         return $this->hasManyThrough('App\Billing', 'App\FlatOwned', 'user_id', 'flat_id');
     }
+
+    public function events()
+    {
+        return $this->hasMany('App\Events');
+    }
 }

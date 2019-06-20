@@ -15,9 +15,9 @@ class APIMiddleware
      */
     public function handle($request, Closure $next)
     {
-        $response = $next($request);
-        $response->header('Access-Control-Allow-Headers', 'Origin, Content-Type, Content-Range, Content-Disposition, Content-Description, X-Auth-Token');
-        $response->header('Access-Control-Allow-Origin', '*');
-        return $response;
+        return $next($request)
+	      ->header('Access-Control-Allow-Origin', '*')
+	      ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+	      ->header('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, X-Token-Auth, Authorization');
     }
 }

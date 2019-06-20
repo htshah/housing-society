@@ -24,4 +24,14 @@ Route::group(['middleware' => ['jwt-auth', 'api-header']], function () {
         Route::middleware('admin')->post('/{id}/update', 'NoticeController@update');
         Route::middleware('admin')->delete('/{id}', 'NoticeController@delete');
     });
+
+    Route::prefix('event')->group(function () {
+        Route::get('', 'EventController@getAll');
+        Route::get('/expired', 'EventController@getAllExpired');
+        Route::get('/{id}', 'EventController@get');
+
+        Route::post('/new', 'EventController@create');
+        Route::post('/{id}/update', 'EventController@update');
+        Route::delete('/{id}', 'EventController@delete');
+    });
 });

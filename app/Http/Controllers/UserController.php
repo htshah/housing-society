@@ -31,39 +31,31 @@ class UserController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             $token = self::getToken($user);
-            $response = ['success' => true, 'data' => ['id' => $user->id, 'auth_token' => $token, 'name' => $user->name, 'email' => $user->email]];
+            $response = ['success' => true, 'data' => ['id' => $user->id, 'token' => $token, 'name' => $user->name, 'email' => $user->email]];
         } else {
             $response = ['success' => false, 'data' => 'Invalid Credentials'];
         }
 
-        return response()->json($response, 201)->cookie('auth_token', $token);
+        return response()->json($response, 201)->cookie('token', $token, config('jwt.ttl'), "/", null, false, true);
     }
 
     public function register(Request $request)
     {
-        $payload = [
+        $input = [
             'password' => Hash::make($request->password),
+            'phone' => $request->phone,
             'email' => $request->email,
             'name' => $request->name,
-            'auth_token' => '',
         ];
 
-        $user = new \App\User($payload);
+        // TODO Validation
+
+        $user = new \App\User($input);
         if ($user->save()) {
 
-            $token = self::getToken($request->email, $request->password); // generate user token
-
-            if (!is_string($token)) {
-                return response()->json(['success' => false, 'data' => 'Token generation failed'], 201);
-            }
-
-            $user = \App\User::where('email', $request->email)->get()->first();
-
-            $user->auth_token = $token; // update user token
-
-            $user->save();
-
-            $response = ['success' => true, 'data' => ['name' => $user->name, 'id' => $user->id, 'email' => $request->email, 'auth_token' => $token]];
+            $response = ['success' => true, 'data' => [
+                'message' => 'Registered successfully',
+            ]];
         } else {
             $response = ['success' => false, 'data' => 'Couldnt register user'];
         }

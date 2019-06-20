@@ -8,7 +8,7 @@ use JWTAuth;
 use JWTAuthException;
 use JWTFactory;
 
-class UserController extends Controller
+class AuthController extends Controller
 {
     private function getToken($user)
     {

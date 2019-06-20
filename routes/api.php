@@ -12,8 +12,8 @@
  */
 
 Route::prefix('auth')->middleware('api-header')->group(function () {
-    Route::post('login', 'UserController@login');
-    Route::post('register', 'UserController@register');
+    Route::post('login', 'AuthController@login');
+    Route::post('register', 'AuthController@register');
 });
 Route::group(['middleware' => ['jwt-auth', 'api-header']], function () {
     Route::prefix('notice')->group(function () {

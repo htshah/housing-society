@@ -32,6 +32,7 @@ Route::group(['middleware' => ['jwt-auth', 'api-header']], function () {
 
         Route::post('/new', 'EventController@create');
         Route::post('/{id}/update', 'EventController@update');
+        Route::post('/{id}/register', 'EventController@registerUser');
         Route::delete('/{id}', 'EventController@delete');
     });
 

@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Event;
+use App\EventRegistrant;
 use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class EventController extends Controller
 {
@@ -72,6 +74,28 @@ class EventController extends Controller
         }
 
         return ['success' => true, 'event' => $event, 'message' => 'Event updated successfully'];
+    }
+
+    public function registerUser(Request $request)
+    {
+        $input = $request->all();
+        $input['user_id'] = static::getUserId();
+        $input['event_id'] = $request->id;
+
+        $validator = Validator::make($input, [
+            'event_id' => 'required|exists:event,id',
+            'no_of_people' => 'required|gte:1',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
+
+        $registration = new EventRegistrant;
+        $registration->fill($input);
+        $registration->save();
+
+        return ['success' => true, 'message' => 'Register successfully for the event'];
     }
 
     public function delete(Request $request)

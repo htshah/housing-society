@@ -34,4 +34,15 @@ Route::group(['middleware' => ['jwt-auth', 'api-header']], function () {
         Route::post('/{id}/update', 'EventController@update');
         Route::delete('/{id}', 'EventController@delete');
     });
+
+    Route::prefix('billing')->group(function () {
+        Route::get('', 'BillingController@getUserBill');
+        Route::get('/{id}', 'BillingController@get');
+        Route::get('/{id}/pay', 'BillingController@pay');
+
+        Route::middleware('admin')->get('/all', 'BillingController@getAll');
+        Route::middleware('admin')->post('/new', 'BillingController@create');
+        Route::middleware('admin')->post('/{id}/update', 'BillingController@update');
+        Route::middleware('admin')->delete('/{id}', 'BillingController@delete');
+    });
 });

@@ -36,4 +36,14 @@ class User extends Authenticatable
     ];
 
     protected $table = "user";
+
+    public function flats()
+    {
+        return $this->hasMany('App\FlatOwned');
+    }
+
+    public function bills()
+    {
+        return $this->hasManyThrough('App\Billing', 'App\FlatOwned', 'user_id', 'flat_id');
+    }
 }

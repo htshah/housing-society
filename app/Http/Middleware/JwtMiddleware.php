@@ -19,16 +19,13 @@ class JwtMiddleware
     {
         try {
             // Test if valid jwt token is provided or not
-            $user = JWTAuth::toUser($request->input('token'));
+            $payload = JWTAuth::parseToken();
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return $next($request);
                 return response()->json(['error' => 'Token is Invalid']);
             } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return $next($request);
                 return response()->json(['error' => 'Token is Expired']);
             } else {
-                return $next($request);
                 return response()->json(['error' => 'Something is wrong']);
             }
         }

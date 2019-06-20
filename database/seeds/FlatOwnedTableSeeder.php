@@ -11,6 +11,6 @@ class FlatOwnedTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory('App\FlatOwned', 100)->create();
     }
 }

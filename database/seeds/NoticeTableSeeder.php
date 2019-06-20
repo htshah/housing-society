@@ -11,6 +11,6 @@ class NoticeTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory('App\Notice', 30)->create();
     }
 }

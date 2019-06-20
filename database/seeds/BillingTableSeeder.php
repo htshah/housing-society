@@ -11,6 +11,6 @@ class BillingTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory('App\Billing', 20)->create();
     }
 }

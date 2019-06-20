@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         $token = null;
         try {
-            $payload = JWTFactory::sub($user->id)->user($user->toArray())->make();
+            $payload = JWTFactory::sub($user->role)->user($user->toArray())->make();
             $token = JWTAuth::encode($payload);
         } catch (JWTAuthException $e) {
             return response()->json([

@@ -45,4 +45,15 @@ Route::group(['middleware' => ['jwt-auth', 'api-header']], function () {
         Route::middleware('admin')->post('/{id}/update', 'BillingController@update');
         Route::middleware('admin')->delete('/{id}', 'BillingController@delete');
     });
+
+    Route::prefix('user')->group(function () {
+        Route::get('/me', 'UserController@getCurrentUser');
+        Route::post('/me/update', 'UserController@update');
+
+        Route::middleware('admin')->get('/all', 'UserController@getAll');
+        Route::middleware('admin')->get('/{id}', 'UserController@get');
+        Route::middleware('admin')->get('/{id}/activate', 'UserController@activateUser');
+        Route::middleware('admin')->get('/{id}/deactivate', 'UserController@deactivateUser');
+        //Route::middleware('admin')->delete('/{id}', 'UserController@delete');
+    });
 });

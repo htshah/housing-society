@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,13 +11,17 @@ use Illuminate\Http\Request;
 |
  */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::prefix('auth')->group(function () {
+Route::prefix('auth')->middleware('api-header')->group(function () {
     Route::post('login', 'UserController@login');
     Route::post('register', 'UserController@register');
 });
 Route::group(['middleware' => ['jwt-auth', 'api-header']], function () {
+    Route::prefix('notice')->group(function () {
+        Route::get('', 'NoticeController@getAll');
+        Route::get('/{id}', 'NoticeController@get');
+
+        Route::middleware('admin')->post('/new', 'NoticeController@create');
+        Route::middleware('admin')->post('/{id}/update', 'NoticeController@update');
+        Route::middleware('admin')->delete('/{id}', 'NoticeController@delete');
+    });
 });

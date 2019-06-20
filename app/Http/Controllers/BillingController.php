@@ -6,6 +6,7 @@ use App\Billing;
 use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BillingController extends Controller
 {

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Notice;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class NoticeController extends Controller
 {

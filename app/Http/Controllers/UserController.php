@@ -18,7 +18,7 @@ class UserController extends Controller
             $token = JWTAuth::encode($payload);
         } catch (JWTAuthException $e) {
             return response()->json([
-                'response' => 'error',
+                'success' => false,
                 'message' => 'Token creation failed',
             ]);
         }

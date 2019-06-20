@@ -2,11 +2,12 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\Model;
+use App\Notice;
 use Faker\Generator as Faker;
 
-$factory->define(Model::class, function (Faker $faker) {
+$factory->define(Notice::class, function (Faker $faker) {
     return [
-        //
+        'title' => $faker->words(5, true),
+        'description' => $faker->sentence(2, true),
     ];
 });

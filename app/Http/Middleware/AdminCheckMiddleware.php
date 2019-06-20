@@ -3,10 +3,10 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use JWTAuth;
 
 class AdminCheckMiddleware
 {
+    use \App\Traits\JWTUtilTrait;
     /**
      * Handle an incoming request.
      *
@@ -17,7 +17,7 @@ class AdminCheckMiddleware
     public function handle($request, Closure $next)
     {
         try {
-            $payload = JWTAuth::decode(JWTAuth::getToken())->toArray();
+            $payload = static::getToken();
             if ($payload['sub'] !== 'admin') {
                 throw new \Exception("Not an admin");
             }

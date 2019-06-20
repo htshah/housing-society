@@ -26,6 +26,14 @@ class NoticeController extends Controller
 
     public function create(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string',
+            'description' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $notice = new Notice;
         $notice->fill($request->all());
         $notice->save();
@@ -35,6 +43,14 @@ class NoticeController extends Controller
 
     public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'nullable|string',
+            'description' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $notice = null;
         try {
             $notice = Notice::findOrFail($request->id);

@@ -29,6 +29,16 @@ class EventController extends Controller
 
     public function create(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string',
+            'description' => 'required|string',
+            'end_time' => 'required|date|date_format:Y-m-d',
+            'amount' => 'required|numeric|between:1,1000',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $input = $request->all();
         $input['user_id'] = static::getToken()['user']->id;
         $event = new Event;
@@ -40,6 +50,16 @@ class EventController extends Controller
 
     public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'nullable|string',
+            'description' => 'nullable|string',
+            'end_time' => 'nullable|date|date_format:Y-m-d',
+            'amount' => 'nullable|numeric|between:1,1000',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $event = null;
         try {
             $event = User::findOrFail(static::getUserId())->events()->findOrFail($request->id);

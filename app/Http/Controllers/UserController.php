@@ -71,6 +71,16 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'nullable|string',
+            'email' => 'nullable|email|unique:user,email',
+            'password' => 'nullable|string|between:6,30',
+            'phone' => 'nullable|numeric|digits_between:10,13|unique:user,phone',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $user = null;
         try {
             $user = User::findOrFail(static::getUserId());

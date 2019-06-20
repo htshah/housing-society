@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use JWTAuthException;
 use JWTFactory;
@@ -27,6 +28,14 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required|string|between:6,30',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $user = User::where('email', $request->email)->get()->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
@@ -41,6 +50,16 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string',
+            'email' => 'required|email|unique:user,email',
+            'password' => 'required|string|between:6,30',
+            'phone' => 'required|numeric|digits_between:10,13|unique:user,phone',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $input = [
             'password' => Hash::make($request->password),
             'phone' => $request->phone,

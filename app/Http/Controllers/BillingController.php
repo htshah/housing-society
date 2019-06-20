@@ -38,6 +38,16 @@ class BillingController extends Controller
 
     public function create(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string',
+            'amount' => 'required|numeric|between:1,1000',
+            'due_date' => 'required|date|date_format:Y-m-d',
+            'flat_id' => 'required|exists:flat_owned,id',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $bill = new bill;
         $bill->fill($request->all());
         $bill->save();
@@ -63,6 +73,16 @@ class BillingController extends Controller
 
     public function update(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'title' => 'nullable|string',
+            'amount' => 'nullable|numeric|between:1,1000',
+            'due_date' => 'nullable|date|date_format:Y-m-d',
+            'flat_id' => 'nullable|exists:flat_owned,id',
+        ]);
+
+        if ($validator->fails()) {
+            return ['success' => false, 'errors' => $validator->errors()];
+        }
         $billing = null;
         try {
             $billing = Billing::findOrFail($request->id);

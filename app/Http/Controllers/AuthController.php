@@ -28,6 +28,8 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
+        $response = [];
+        $token = '';
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string|between:6,30',
@@ -39,10 +41,17 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->get()->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
+            // Check if user is activated or not
+            if (!$user->is_active) {
+                return [
+                    'success' => false,
+                    'message' => 'User is not activated.',
+                ];
+            }
             $token = self::getToken($user);
             $response = ['success' => true, 'data' => ['id' => $user->id, 'token' => $token, 'name' => $user->name, 'email' => $user->email]];
         } else {
-            $response = ['success' => false, 'data' => 'Invalid Credentials'];
+            $response = ['success' => false, 'message' => 'Invalid Credentials'];
         }
 
         return response()->json($response, 201)->cookie('token', $token, config('jwt.ttl'), "/", null, false, false);

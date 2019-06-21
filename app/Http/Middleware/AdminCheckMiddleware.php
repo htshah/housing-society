@@ -22,7 +22,7 @@ class AdminCheckMiddleware
                 throw new \Exception("Not an admin");
             }
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()]); //'No access rights'
+            return response()->json(['success' => false, 'message' => $e->getMessage()]); //'No access rights'
         }
         return $next($request);
     }

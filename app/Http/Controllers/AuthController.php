@@ -64,6 +64,7 @@ class AuthController extends Controller
             'email' => 'required|email|unique:user,email',
             'password' => 'required|string|between:6,30',
             'phone' => 'required|numeric|digits_between:10,13|unique:user,phone',
+            'flat_id' => 'required|numeric|min:100|unique:flat_owned,id',
         ]);
 
         if ($validator->fails()) {
@@ -74,18 +75,19 @@ class AuthController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'name' => $request->name,
+            'is_active' => 1,
         ];
 
         // TODO Validation
 
         $user = new \App\User($input);
         if ($user->save()) {
-
+            $user->flats()->create(['id' => $request->flat_id]);
             $response = ['success' => true, 'data' => [
                 'message' => 'Registered successfully',
             ]];
         } else {
-            $response = ['success' => false, 'data' => 'Couldnt register user'];
+            $response = ['success' => false, 'data' => 'Couldn\'t register user'];
         }
 
         return response()->json($response, 201);

@@ -20,8 +20,8 @@ class CreateEventRegistrantTable extends Migration
             $table->integer('no_of_people');
             $table->timestamps();
 
-            $table->foreign('event_id')->references('id')->on('event');
-            $table->foreign('user_id')->references('id')->on('user');
+            $table->foreign('event_id')->references('id')->on('event')->onDelete('cascade');;
+            $table->foreign('user_id')->references('id')->on('user')->onDelete('cascade');;
         });
     }
 

@@ -22,7 +22,7 @@ class CreateBillingTable extends Migration
             $table->unsignedBigInteger('flat_id');
             $table->timestamps();
 
-            $table->foreign('flat_id')->references('id')->on('flat_owned');
+            $table->foreign('flat_id')->references('id')->on('flat_owned')->onDelete('cascade');;
         });
     }
 

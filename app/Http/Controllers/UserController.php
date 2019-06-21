@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -72,20 +73,26 @@ class UserController extends Controller
 
     public function update(Request $request)
     {
+        $userId = static::getUserId();
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|string',
-            'email' => 'nullable|email|unique:user,email',
+            'email' => 'nullable|email|unique:user,email,' . $userId,
             'password' => 'nullable|string|between:6,30',
-            'phone' => 'nullable|numeric|digits_between:10,13|unique:user,phone',
+            'phone' => 'nullable|numeric|digits_between:10,13|unique:user,phone,' . $userId,
         ]);
 
         if ($validator->fails()) {
             return ['success' => false, 'errors' => $validator->errors()];
         }
+        $input = $request->all();
+        if (isset($input['password'])) {
+            $input['password'] = Hash::make($input['password']);
+        }
         $user = null;
+
         try {
-            $user = User::findOrFail(static::getUserId());
-            $user->update($request->all());
+            $user = User::findOrFail($userId);
+            $user->update($input);
             $user->save();
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {

@@ -8,6 +8,7 @@ use JWTAuth;
 
 class JwtMiddleware
 {
+    use \App\Traits\JWTUtilTrait;
     /**
      * Handle an incoming request.
      *
@@ -19,14 +20,14 @@ class JwtMiddleware
     {
         try {
             // Test if valid jwt token is provided or not
-            $payload = JWTAuth::parseToken();
+            $payload = static::getToken();
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
-                return response()->json(['error' => 'Token is Invalid']);
+                return response()->json(['success' => false, 'message' => 'Token is Invalid']);
             } else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
-                return response()->json(['error' => 'Token is Expired']);
+                return response()->json(['success' => false, 'message' => 'Token is Expired']);
             } else {
-                return response()->json(['error' => 'Something is wrong', 'message' => $e->getMessage()]);
+                return response()->json(['success' => false, 'message' => $e->getMessage()]);
             }
         }
         return $next($request);

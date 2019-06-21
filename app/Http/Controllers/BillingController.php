@@ -14,7 +14,7 @@ class BillingController extends Controller
 
     public function getAll(Request $request)
     {
-        return ['success' => true, 'bill' => Billing::all()];
+        return ['success' => true, 'bill' => Billing::orderBy('is_payed', 'asc')->orderBy('due_date', 'asc')->get()];
     }
 
     public function getUserBill(Request $request)
@@ -41,7 +41,7 @@ class BillingController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required|string',
-            'amount' => 'required|numeric|between:1,1000',
+            'amount' => 'required|numeric|between:1,10000',
             'due_date' => 'required|date|date_format:Y-m-d',
             'flat_id' => 'required|exists:flat_owned,id',
         ]);
@@ -49,7 +49,7 @@ class BillingController extends Controller
         if ($validator->fails()) {
             return ['success' => false, 'errors' => $validator->errors()];
         }
-        $bill = new bill;
+        $bill = new Billing;
         $bill->fill($request->all());
         $bill->save();
 

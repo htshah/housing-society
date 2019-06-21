@@ -11,7 +11,7 @@ class NoticeController extends Controller
 {
     public function getAll(Request $request)
     {
-        return ['success' => true, 'notice' => Notice::all()];
+        return ['success' => true, 'notice' => Notice::orderBy('id', 'desc')->get()];
     }
 
     public function get(Request $request)

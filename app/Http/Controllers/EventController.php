@@ -15,7 +15,7 @@ class EventController extends Controller
 
     public function getAll(Request $request)
     {
-        return ['success' => true, 'event' => Event::all()];
+        return ['success' => true, 'event' => Event::orderBy('id', 'desc')->get()];
     }
 
     public function get(Request $request)

@@ -62,7 +62,7 @@ class UserController extends Controller
     public function getCurrentUser(Request $request)
     {
         try {
-            return ['success' => true, 'user' => User::findOrFail(static::getUserId())->first()];
+            return ['success' => true, 'user' => User::findOrFail(static::getUserId())];
         } catch (\Exception $e) {
             if ($e instanceof ModelNotFoundException) {
                 return response(['success' => false, 'message' => 'Invalid ID'], 404);

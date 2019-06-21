@@ -7,7 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Notice::class, function (Faker $faker) {
     return [
-        'title' => $faker->words(5, true),
-        'description' => $faker->sentence(2, true),
+        'title' => $faker->sentence(2),
+        'description' => $faker->sentence(5),
     ];
 });
